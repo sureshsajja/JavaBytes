@@ -40,7 +40,7 @@ public class EmployeeSerializationTest {
     @Test
     public void expectSerializationWorks() throws IOException, ClassNotFoundException {
 
-        EmployeeSerialization employee = new EmployeeSerialization("Suresh", 1234);
+        EmployeeSerialization employee = new EmployeeSerialization("Suresh", 444534534);
 
         ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("temp.txt"));
         outputStream.writeObject(employee);
@@ -49,5 +49,7 @@ public class EmployeeSerializationTest {
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("temp.txt"));
         EmployeeSerialization _employee = (EmployeeSerialization) inputStream.readObject();
         Assert.assertEquals(employee.toString(), _employee.toString());
+        Assert.assertEquals(employee.getId(), _employee.getId());
+        Assert.assertEquals(employee.getName(), _employee.getName());
     }
 }

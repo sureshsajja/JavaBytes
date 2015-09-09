@@ -23,7 +23,7 @@
  *
  */
 
-package com.coderevisited.externalization;
+package com.coderevisited.serialization;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,23 +35,20 @@ import java.io.*;
  * Date :  09/09/15
  * Version : v1
  */
-public class InvalidExternalizationTest {
+public class ImmutableSerializationTest {
 
-
-    @Test(expected = InvalidClassException.class)
-    public void expectExternalizationFails() throws IOException, ClassNotFoundException {
-
-        InvalidExternalization employee = new InvalidExternalization("Suresh", 1234);
+    @Test
+    public void expectMutableExternalizationTest() throws IOException, ClassNotFoundException {
+        ImmutableSerialization employee = new ImmutableSerialization("Suresh", 1234);
 
         ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("temp.txt"));
         outputStream.writeObject(employee);
         outputStream.close();
 
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("temp.txt"));
-        InvalidExternalization _employee = (InvalidExternalization) inputStream.readObject();
+        ImmutableSerialization _employee = (ImmutableSerialization) inputStream.readObject();
+        Assert.assertEquals(employee.toString(), _employee.toString());
         Assert.assertEquals(employee.getId(), _employee.getId());
         Assert.assertEquals(employee.getName(), _employee.getName());
-
     }
-
 }

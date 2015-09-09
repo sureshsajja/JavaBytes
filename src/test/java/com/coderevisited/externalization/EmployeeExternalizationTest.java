@@ -49,5 +49,7 @@ public class EmployeeExternalizationTest {
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("temp.txt"));
         EmployeeExternalization _employee = (EmployeeExternalization) inputStream.readObject();
         Assert.assertEquals(employee.toString(), _employee.toString());
+        Assert.assertEquals(employee.getId(), _employee.getId());
+        Assert.assertEquals(employee.getName(), _employee.getName());
     }
 }

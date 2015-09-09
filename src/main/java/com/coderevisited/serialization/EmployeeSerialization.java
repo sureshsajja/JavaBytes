@@ -42,6 +42,13 @@ public class EmployeeSerialization implements Serializable {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();

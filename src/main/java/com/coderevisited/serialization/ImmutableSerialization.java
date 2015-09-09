@@ -23,31 +23,25 @@
  *
  */
 
-package com.coderevisited.externalization;
+package com.coderevisited.serialization;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /**
  * User :  Suresh
  * Date :  09/09/15
  * Version : v1
  */
-public class EmployeeExternalization implements Externalizable {
+public class ImmutableSerialization implements Serializable {
 
+    private final String name;
+    private final int id;
 
-    private String name;
-    private int id;
-
-    public EmployeeExternalization(String name, int id) {
+    public ImmutableSerialization(String name, int id) {
         this.name = name;
         this.id = id;
-    }
-
-    public EmployeeExternalization() {
-
     }
 
     public String getName() {
@@ -58,20 +52,37 @@ public class EmployeeExternalization implements Externalizable {
         return id;
     }
 
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(name);
-        out.writeInt(id);
-    }
-
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        name = (String) in.readObject();
-        id = in.readInt();
-    }
-
-
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Employee Name : ").append(name).append(" ID : ").append(id);
         return sb.toString();
+    }
+
+
+    private Object writeReplace() {
+        return new SerializationProxy(this);
+    }
+
+    private void readObject(ObjectInputStream stream) throws InvalidObjectException {
+        throw new InvalidObjectException("Proxy required.");
+    }
+
+    private static class SerializationProxy implements Serializable {
+
+
+        private final String name;
+        private final int id;
+
+        public SerializationProxy(ImmutableSerialization employee) {
+            this.name = employee.name;
+            this.id = employee.id;
+        }
+
+
+        private Object readResolve() {
+            return new ImmutableSerialization(name, id);
+        }
+
+
     }
 }

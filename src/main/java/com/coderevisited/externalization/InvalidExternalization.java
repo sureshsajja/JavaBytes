@@ -50,6 +50,13 @@ public class InvalidExternalization implements Externalizable {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(name);
